@@ -10,7 +10,7 @@ class Admin(User):
         self.role = role
 
 
-    def register_admin(self, username, password, email, register_time, role):
+    def register_admin(self, username, password, register_time, role):
         if (self.check_username_exist(username)):
             return False
         user_id = self.generate_unique_user_id()
@@ -21,7 +21,7 @@ class Admin(User):
             path = path.replace("model", "")
             user_data = open(path + "\\data\\user.txt", 'a')
 
-            user_data.write( f"\n{user_id};;;{username};;;{self.encrypt_password(password)};;;{register_time};;;{role};;;{email}")
+            user_data.write( f"\n{user_id};;;{username};;;{self.encrypt_password(password)};;;{register_time};;;{role}")
             user_data.close()
 
     def __str__(self):
