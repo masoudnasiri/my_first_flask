@@ -74,6 +74,7 @@ class Instructor(User):
         with codecs.open(path,encoding="utf-8",mode="r") as user_data:
             users=user_data.readlines()
             instructor_list=[]
+            pages_dic={}
             for user in users:
                 one_user=user.split(";;;")
                 if one_user[4]=="instructor":
@@ -84,7 +85,10 @@ class Instructor(User):
             total_pages=(len(instructor_list)//20)+1
         else:
             total_pages=len(instructor_list)//20
-        return (instructor_list,total_pages,len(instructor_list))
+        for i in range(total_pages):
+            pages_dic[i]=instructor_list[i:i+20]
+
+        return (pages_dic[page],total_pages,len(instructor_list))
 
 
     def generate_instructor_figure1(self):
@@ -104,7 +108,7 @@ class Instructor(User):
         instructor_name=[]
         num_of_course=[]
         for item in range(10):
-            instructor_name.append(sort_instructor[item][0].display_name[:3])
+            instructor_name.append(sort_instructor[item][0].display_name.split(" ")[:3])
             num_of_course.append(sort_instructor[item][1])
         data={"instructor_name":instructor_name,"number_of_course":num_of_course}
         df=pandas.DataFrame(data,columns=["instructor_name","number_of_course"])
