@@ -1,6 +1,6 @@
 import random
 import os
-
+import codecs
 import re
 
 class User:
@@ -26,7 +26,7 @@ class User:
         return False
 
     def validate_password(self, password):
-        size = re.compile(r"^.{8,}$")
+        size = re.compile(r"^.{5,}$")
         if (size.match(password)):
             return True
         else:
@@ -53,23 +53,24 @@ class User:
     def authenticate_user(self, username, password):
         path = os.path.dirname(__file__)
         path = path.replace("model", "")
-        user_data = open(path + "\\data\\user.txt")
+        user_data =codecs.open(path + "\\data\\user.txt",encoding="utf-8")
 
         for line in user_data:
-            temp_list = line.split(";;;")
-            print(self.encrypt_password(password), temp_list[2])
+            remove_return=line.replace("\n","")
+            temp_list = remove_return.split(";;;")
+
             if (username == temp_list[1] and self.encrypt_password(password) == temp_list[2]):
                 user_data.close()
-                return True
+                return (True,remove_return)
         user_data.close()
-        return False
+        return (False,"")
 
 
 
     def check_username_exist(self, username):
         path = os.path.dirname(__file__)
         path = path.replace("model", "")
-        username_data = open(path + "\\data\\user.txt")
+        username_data = codecs.open(path + "\\data\\user.txt",encoding="utf-8")
         for line in username_data:
             temp_username = (line.split(";;;"))[1]
 

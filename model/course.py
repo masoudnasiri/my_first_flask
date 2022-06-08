@@ -195,7 +195,7 @@ class Course:
         course_dic_list=dict(itertools.islice(course_dic_list.items(), 10))
 
         sub_cat=list(course_dic_list.keys())
-        print(sub_cat)
+
         for item in sub_cat:
             temp_sub=item.split()
             if len(temp_sub)>2:
@@ -230,7 +230,6 @@ class Course:
 
         course_dic_list=dict(itertools.islice(course_dic_list.items(), 10))
         sub_cat=list(course_dic_list.keys())
-        print(sub_cat)
         num_of_subscribers=list(course_dic_list.values())
 
         plt.bar(range(len(course_dic_list)), num_of_subscribers, tick_label=sub_cat)
@@ -293,12 +292,58 @@ class Course:
         plt.pie(total_course, labels=category, explode=explode)
         plt.show()
 
-
-
-
-
     def generate_course_figure5(self):
-        pass
+        path = os.path.dirname(__file__).replace("\\model", "") + "\\data\\course.txt"
+        with codecs.open(path, encoding="utf-8", mode="r") as course_data:
+            courses = course_data.readlines()
+            agenda=["reviewed Courses","Without Review Courses"]
+            data= [0,0]
+            for course in courses:
+                one_course = course.split(";;;")
+                if len(one_course) == 11:
+                    if int(course.split(";;;")[10].strip('.\n')) > 0:
+                        data[0]=data[0]+1
+                    else:
+                        data[1]=data[1]+1
+            plt.bar(range(len(agenda)), data, tick_label=agenda)
+            plt.show()
+
+            return "This graph show How many courses did reviewed and how many didn't"
 
     def generate_course_figure6(self):
-        pass
+        path=os.path.dirname(__file__).replace("\\model", "") + "\\data\\course.txt"
+        with codecs.open(path,encoding="utf-8",mode="r") as course_data:
+            courses=course_data.readlines()
+            course_obj_list=[]
+            for course in courses:
+                one_course=course.split(";;;")
+                if len(one_course) == 11:
+                    course_obj = Course(one_course[0], one_course[1], one_course[2], one_course[3], one_course[4],
+                                        one_course[5],
+                                        one_course[6], one_course[7], one_course[8], one_course[9], one_course[10])
+                    course_obj_list.append(course_obj)
+        course_dic_list={}
+        sub_cat_seen=set()
+        for item in course_obj_list:
+            if item.subcategory_id not in sub_cat_seen:
+                sub_cat_seen.add(item.subcategory_id)
+                course_dic_list[item.subcategory_title]=1
+            else:
+                total_courses=course_dic_list[item.subcategory_title]
+                course_dic_list[item.subcategory_title]=total_courses+1
+
+        course_dic_list=dict(sorted(course_dic_list.items(), key=lambda item: item[1]))
+        course_dic_list=dict(itertools.islice(course_dic_list.items(), 10))
+
+        sub_cat=list(course_dic_list.keys())
+        for item in sub_cat:
+            temp_sub=item.split()
+            if len(temp_sub)>2:
+                sub_cat[sub_cat.index(item)]=temp_sub[0]+" "+temp_sub[1]+" "+temp_sub[2]
+
+        number_of_courses=list(course_dic_list.values())
+
+        plt.bar(range(len(course_dic_list)), number_of_courses, tick_label=sub_cat)
+        plt.show()
+        return ("This Method Display a Graph for top 10 Subcategories")
+
