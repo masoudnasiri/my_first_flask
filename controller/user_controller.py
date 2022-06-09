@@ -57,8 +57,25 @@ def logout():
 def register():
     return render_template("00register.html")
 
+@user_page.route("/register",methods=["POST"])
+def register_post():
+    all_data=request.values
+    username=all_data["username"]
+    password=all_data["password"]
+    email=all_data["email"]
+    role=all_data["role"]
+    register_time=all_data["register_time"]
+    validation=False
+    if username and password and email:
+        if login_aut_obj.validate_username(username) and login_aut_obj.validate_password(password) and login_aut_obj.validate_email(email):
+            validation=True
+    if validation and login_aut_obj.check_username_exist(username)==False:
+        login_aut_obj.register_user(username,password,email,register_time,role)
+        return render_result(msg="User Register Successfully")
 
-
-
-# use @user_page.route("") for each page url
+    else:
+        return render_err_result(msg="You Enter improper username,password or email address! ")
+@user_page.route("/student-list",methods=["GET"])
+def student_list():
+    pass
 
