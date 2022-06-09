@@ -17,23 +17,25 @@ class Student(User):
 
 
     def get_students_by_page(self,page):
+        page=int(page)
         path = os.path.dirname(__file__).replace("\\model", "") + "\\data\\user.txt"
         with codecs.open(path, encoding="utf-8", mode="r") as user_data:
             users = user_data.readlines()
             student_list = []
-            pages_dic={}
+
             for user in users:
                 one_user = user.split(";;;")
                 if one_user[4] == "student":
                     student = Student(one_user[0], one_user[1], one_user[2], one_user[3], one_user[4], one_user[5])
                     student_list.append(student)
+        student_list=student_list[(page-1)*20:(page*20)-1]
+
         if len(student_list) % 20 != 0:
             total_pages = (len(student_list) // 20) + 1
         else:
             total_pages = len(student_list) // 20
-        for i in range(total_pages):
-            pages_dic[i]=student_list[i:i+20]
-        return (pages_dic[page], total_pages, len(student_list))
+
+        return student_list, total_pages, len(student_list)
 
     def get_student_by_id(self,id):
         id=str(id)

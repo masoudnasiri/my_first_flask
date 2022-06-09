@@ -21,20 +21,19 @@ def reset_database():
     pass
 
 
-
+@course_page.route("/course-list", methods=["GET"])
 def course_list():
     context = {}
-    if # check login user
+    if User.current_login_user:
         req = request.values
         page = req['page'] if "page" in req else 1
 
         # get values for one_page_course_list, total_pages, total_num
-
+        one_page_course_list, total_pages, total_num = model_course.get_courses_by_page(page)
         # check one_page_course_list, make sure this variable not be None, if None, assign it to []
-
+        if isinstance(one_page_course_list, type(None)): one_page_course_list = []
         # get values for page_num_list
-
-
+        page_num_list=model_course.generate_page_num_list(page,total_pages)
         context['one_page_course_list'] = one_page_course_list
         context['total_pages'] = total_pages
         context['page_num_list'] = page_num_list
@@ -42,7 +41,7 @@ def course_list():
         context['total_num'] = total_num
 
         # add "current_user_role" to context
-
+        context["current_user_role"]=User.current_login_user.role
     else:
         return redirect(url_for("index_page.index"))
     return render_template("02course_list.html", **context)

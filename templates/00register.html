@@ -102,7 +102,7 @@
                         password: password,
                         email: email,
                         role: role,
-                        register_time: new Date().getTime().toString()
+                        register_time: new Date().valueOf()
                     },
                     dataType: 'json',
                     success: function (res) {

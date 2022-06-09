@@ -8,12 +8,15 @@ import time
 
 index_page = Blueprint("index_page", __name__)
 
-@index_page.route("/",methods=["GET"])
+@index_page.route("/")
 def index():
+    context = {}
     admin = Admin()
     admin.register_admin("admin", "admin", time.time(), "admin")
     if User.current_login_user != None:
-        return  render_template("01index.html",current_user_role=User.current_login_user.role )
+        context["current_user_role"]=User.current_login_user.role
+
+        return render_template("01index.html",**context)
     else:
         return render_template("01index.html")
 

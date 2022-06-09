@@ -62,6 +62,7 @@ class Course:
 
 
     def generate_page_num_list(self, page, total_pages):
+        page=int(page)
         if page<=5:
             viewbale_pages=list(range(1,10))
         elif page>5 and page<(total_pages-4):
@@ -71,23 +72,26 @@ class Course:
         return viewbale_pages
 
     def get_courses_by_page(self, page):
+        page=int(page)
         path=os.path.dirname(__file__).replace("\\model", "") + "\\data\\course.txt"
         with codecs.open(path,encoding="utf-8",mode="r") as course_data:
             courses=course_data.readlines()
             course_list=[]
-            pages_dic={}
+
             for course in courses:
                 one_course=course.split(";;;")
-                course_obj=Course(one_course[0],one_course[1],one_course[2],one_course[3],one_course[4],one_course[5],
+                if len(one_course)==11:
+                    course_obj=Course(one_course[0],one_course[1],one_course[2],one_course[3],one_course[4],one_course[5],
                                   one_course[6],one_course[7],one_course[8],one_course[9],one_course[10])
-                course_list.append(course_obj)
+                    course_list.append(course_obj)
+        total_course=len(course_list)
+        course_list = course_list[(page - 1) * 20:(page * 20) ]
         if len(course_list)%20!=0:
             total_pages=(len(course_list)//20)+1
         else:
             total_pages=len(course_list)//20
-        for i in range(total_pages):
-            pages_dic[i]=course_list[i:i+20]
-        return (pages_dic[page],total_pages,len(course_list))
+
+        return (course_list,total_pages,total_course)
 
     def delete_course_by_id(self, temp_course_id):
         id = str(temp_course_id)

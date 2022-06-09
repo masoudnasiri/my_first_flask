@@ -14,10 +14,21 @@ Student Info
 {% block content%}
 <div class="container">
     <!-- student code start -->
+    <ul class="list-group">
+  <li class="list-group-item active">Student Information Details</li>
+  <li class="list-group-item">Student ID : {{ student.uid }}</li>
+  <li class="list-group-item">Username: {{ student.username }}</li>
+  <li class="list-group-item">Password: {{ student.password }}</li>
+  <li class="list-group-item">Email : {{ student.email }}</li>
+  <li class="list-group-item">Register Time : {{ student.register_time}}</li>
+</ul>
 
     <!-- student code end -->
 </div>
 {% endblock%}
+
+
+    <!-- student code end -->
 
 <!-- -------------------------------------------------------------------- -->
 

@@ -110,8 +110,14 @@ class Instructor(User):
         for item in range(10):
             instructor_name.append(sort_instructor[item][0].display_name.split(" ")[:3])
             num_of_course.append(sort_instructor[item][1])
-        data={"instructor_name":instructor_name,"number_of_course":num_of_course}
-        df=pandas.DataFrame(data,columns=["instructor_name","number_of_course"])
-        df.plot(x='instructor_name', y='number_of_course', kind='bar')
+
+        plt.bar(instructor_name, num_of_course, linewidth=1.8)
+        plt.xticks(rotation=30)
+        plt.xlabel("instructor's name")
+        plt.ylabel("number of courses")
+        plt.title("top 10 instructors with most courses")
         plt.show()
+        plt.savefig(os.path.dirname(__file__).replace("\\model", "") + '/static/img/instructor_fig1.png')
+        return "The above graph tells about top 10 instructors which teach most courses"
+
 

@@ -146,7 +146,7 @@ class User:
     def date_conversion(self, register_time):
         # Add +11 hours for Melbourn time
         register_time=int(register_time)
-        seconds = register_time + (11 * 3600)
+        seconds = (register_time/1000) + (11 * 3600)
         # Save the time in Human
         # Number of days in month
         # in normal year
